@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<div id="wrapper"><a href="#" id="inner">click here!</a></div>
+<script type="text/javascript" src="../js/jquery-2.0.3.js"></script>
+<script type="text/javascript">
+	(function($){
+		$.fn.addrInput = function(_aoOptions){
+			var _oSelf = this;
+			_oSelf.sVersion = "version-1.0.0";
+			_oSelf.oConfig  = {
+				nInputLimitNum :9
+			}
+
+			//插件配置
+			$.extend(_oSelf.oConfig,_aoOptions);
+			$.fn.addrInput._initUI.call(_oSelf,event);
+			$.fn.addrInput._initEvents.call(_oSelf);
+
+			// 提供外部函数
+			this.close = function(){
+				_close();
+			}
+
+			return _oSelf;
+		}
+
+		$.fn.addrInput._initUI = function(){
+			var _oSelf = this,
+			_oTarget = $(event.currentTarget);
+		}
+
+		$.fn.addrInput._initEvents = function(){}
+
+	})(window.jQuery);
+	//点评
+	//1.美观 插件的方法写在外部，并通过在插件主体传递this是方式调用
+	//2 定义插件版本号  不过这里没有用到
+	//3 关于call 这里的第一个参数为传递this ，后面的均为参数
+	//4 关于  this
+	//  在插件的方法中，可能有用到指向插件的this， 和指向时间触发的this，所以时间触发的this 用event 来获取event.currentTarget
+	//  event.currentTarget  指向事件所绑定的元素，按照事件冒泡的方式，向上找到元素
+	//  event.target 始终指向时间发生时的元素
+	//  
+	
+	$(function(){
+		$("#wrapper").click(function(e){
+			console.log("#wrapper");
+			console.log(e.currentTarget);
+			console.log(e.target);
+
+		})
+
+		$("#inner").click(function(e){
+			console.log("#inner");
+			console.log(e.currentTarget);
+			console.log(e.target);
+		})
+	})
+</script>
+</body>
+</html>

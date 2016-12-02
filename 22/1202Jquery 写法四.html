@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<div id="wrapper"><a href="#" id="inner">click here!</a></div>
+<script type="text/javascript" src="../js/jquery-2.0.3.js"></script>
+<script type="text/javascript">
+	function EditorUtil(){
+		this._editorContent = $("#editor_content");
+		this._picBtn = $("#project_pic");
+		this.ieBookmark = null;
+	}
+
+	EditorUtil.prototype = {
+		consturctor:EditorUtil,
+		noteBookmark:function(){
+
+		},
+		htmlReplace:function(text){
+			if(typeof text ==="string"){
+				return text.replace(/[<>"&]/g,function(match,pos,originalText){
+					switch(match){
+						case '<':
+							return "&lt;";
+						case '>':
+							return "&gt;";
+						case '&':
+							return '&amp;';
+						case '"':
+							return '&quot;';
+					}
+				})
+			}
+		},
+		init:function(){
+			this._memBtn.bind('click',function(event){
+				$(".error_content").hide();
+				return false;
+			})
+		}
+	}
+
+	//除实话富文本编辑器
+	var editor = new EditorUtil();
+	editor.init();
+
+
+	//http://xuanfengge.com/demo/201401/dragSort/
+</script>
+</body>
+</html>

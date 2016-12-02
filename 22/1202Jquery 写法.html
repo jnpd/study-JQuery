@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+<script type="text/javascript" src="../js/jquery-2.0.3.js"></script>
+<script type="text/javascript">
+	(function($,window){
+		var _oDialogCollections = {};
+		// 插件定义
+		$.fn.MNDialog = function(_aoConfig){
+			//默认参数
+			var defaults = {
+				sId :'',
+				nWidth:400,
+				bDisplayHeader:true,
+				oContentHtml:'',
+				fCloseCallback:null
+			};
+
+			var _oSelf = this,
+			$this = $(this);
+
+			//插件配置
+			this.oConfig = $.extend(defaults,_aoConfig);
+			var _init = function(){
+				if(_oDialogCollections){
+					//对于已初始化的处理
+					//如果此时已经存在弹框，则remove掉在添加新的弹框
+				}
+
+				//初始化弹出框数据
+				_initData();
+				//事件绑定
+				_loadEvent();
+				//加载内容
+				_loadContent();
+			}
+
+			//私有函数
+			var _initData = function(){}
+			var _loadEvent = function(){}
+			var _loadContent = function(){
+				//内容( 分字符和函数两种，字符为静态模板，函数为异步请求后组装的模板，会延迟，所有特殊处理)
+				if($.isFunction(_oSelf.oConfig.oContentHtml)){ //如果内容则函数，则异步请求后组装
+					_oSelf.oConfig.oContentHtml.call(_oSelf,function(oCallbackHtml){
+						_oSelf.html(oCallbackHtml);
+						_oSelf.oConfig.fLoadedCallback && _oSelf.oConfig.fLoadedCallback.call(_oSelf,_oSelf._oContainer$);
+
+					})
+				}else if($.type(_oSelf.oConfig.oContentHtml)==="string"){
+					_oSelf.html(_oSelf.config.oContentHtml);
+					_oSelf.oConfig.fLoadedCallback && _oSelf.oConfig.fLoadedCallback.call(_oSelf,_oSelf._oContainer$)
+				}else{
+					console.log("弹出框的内容格式不对，应为function或者string");
+				}
+			};
+
+			//内部使用参数
+			var _oEventAlias = {
+				click:"D_ck",
+				dbclick:"D_dbl"
+			}
+
+			//提供外部函数
+			this.close = function(){
+				_close();
+			}
+
+			//启动插件
+			_init();
+
+			// 链式调用
+			return this;
+		}
+	})(jQuery,window);
+
+	var  MNDialog = $("#header").MNDialog({
+		sId:"#footer",  //覆盖默认值
+		fCloseCallback:dialog, //回调函数
+		oContentHtml:function(_aoCallback){
+			_aoCallback(_oEditGrpDlgview.el)
+		}
+
+	});
+
+	//调用提供的函数
+	MNDialog.close;
+
+	//回调函数
+	function dialog(){
+
+	}
+
+	// 点评
+	// 1. 自调用匿名函数 (function($,window){})(jQuery,window)
+	// 用处：通过定义一个匿名函数，创建一个"私有"的命名空间，该命名空间的变量和方法，不会破坏全局的命名空间。这点非常有用也是一个JS框架必须支持的功能，jQuery 被应用在成千上万的javascript 程序中，必须确保jQuery 创建的变量不能和导入他的程序所使用的变量发生冲突。
+	// 2 匿名函数为什么要传入window
+	// 通过传入window 遍历，使得window 由全局变量变为局部变量，当在jQuery 代码中访问window时，不需要讲作用域链回退到顶层作用域，这样可以更快的访问window，这还不算关键所在，更重要的是，将window作为参数传入，可以在压缩代码时进行优化，看看jquery.min.js
+	
+	//(function(a,b){})(jQuery,window);
+
+	// 3.全局变量this定义
+	/*var _oSelf = this;
+	$this = $(this);*/
+
+	//使得在插件的函数内可以使用指向插件的this；
+	//4. 插件配置
+	// this.oConfig =  $.extend(defaults,_aoConfig);
+	// 设置默认参数，同时也可以再插件定义时传入参数覆盖默认值
+	// 
+	// 5 初始化函数
+	// 一般的插件 会有init初始化函数并在插件的尾部初始化
+	// 私有函数、公有函数
+	// 私有函数：插件内使用，函数名用'_' 作为前缀标识
+	// 公有函数：可在插件外使用，函数名使用"this" 作为前缀标识，作为插件的一个方法供外部使用
+	// 
+	// return this 最后返回jquery对象，便于jquery 的链式操作
+ </script>
+</body>
+</html>
