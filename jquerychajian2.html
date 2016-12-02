@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>本地预览</title>
+        <script type="text/javascript" src="js/jquery-2.0.3.js"></script>
+</head>
+<body>
+
+ <div class="test" style="background:red">
+         dd 
+ </div>
+ <ul>
+ 	<li><a href="test.html">我要捡钱</a><span>ddd</span></li>
+ 	<li><a href="test2.html">我要微博</a></li>
+ 	<li><a href="test3.html">我要微博一起</a></li>
+ </ul>
+<script type="text/javascript">
+ $.fn.myPlugin = function(options){
+ 	var defaults = {
+ 		'color':'red',
+ 		"fontSize":'14px'
+ 	};
+ 	var setting = $.extend({},defaults,options);
+ 	debugger;
+ 	//this.css('color','green');
+ 	return this.css({
+ 		'color':setting.color,
+ 		'fontSize':setting.fontSize
+ 	})
+ }
+  
+ $(function(){
+ 	$("a").myPlugin({
+ 		color:'#2c9929',
+ 		fontSize:'24px'
+ 	});
+ })
+
+</script>
+</body>
+</html>

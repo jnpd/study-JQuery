@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="button" value="jQuery扩展方法测试" name="">
+	<div>test click</div>
+	<script type="text/javascript" src="../js/jquery-2.0.3.js"></script>
+	<script type="text/javascript">
+	  // 1.jQuery.extend() 方法
+	  // 	这种方法能够创建全局函数或选择器
+	  // 	所谓全局函数,就是jQuery对象的方法，实际上就是位于jQuery 命名空间内部的函数，有人把这类函数称为使用工具函数，这些函数都有一个共同的特征，就是不直接操作DOM元素，二手操作javascript 的非元素对象，或执行其他非对象的特定操作，如JQuery 的each() 函数和noConflict()函数；
+	  // 例如在JQuery 命名空间上创建两个公共函数
+	jQuery.extend({
+		min:function(a,b){
+			return a>b? b:a;
+		},
+		max:function(a,b){
+			return a>b? a:b;
+		}
+	});
+
+/*	$(function(){
+		$("input").on("click",function(){
+			var a = prompt("请输入一个数字");
+			var b = prompt("请输入一个数字B");
+			var c = jQuery.min(a,b);
+			var d = jQuery.max(a,b);
+			alert("最大值是" +d+ "\n最小值是"+c )
+		})
+	});*/
+
+	// jquery.extend()方法法除了可以创建插件以及方法外，还可以用来扩展jquery 对象。
+	// 例如，调用jquery.extend() 方法把对象a 和对象B 合并为一个新的对象，并返回合并对象将其赋值给变量C
+	
+	var a1 = {name:'aaa',pass:777};
+	var b1 = {name:'bbb',pass:888,age:78}
+	var c1= jQuery.extend(a1,b1)
+	console.log(c1);
+
+	//如果要向jquery 命名空间上添加一个函数，只需要将这个新函数制定为jquery 对象的一个属性即可。其中jquery 也可以简写为$  jquery.smalluv = $.smalluv
+	//
+	jQuery.smalluv = $.smalluv = {
+		min:function(a,b){
+			return a>b?b:a;
+		},
+		max:function(a,b){
+			return a>b?a:b;
+		}
+	}
+
+	$(function(){
+		$("input").on("click",function(){
+			$("input").on("click",function(){
+			var a = prompt("请输入一个数字");
+			var b = prompt("请输入一个数字B");
+			var c = jQuery.smalluv.min(a,b);
+			var d = jQuery.smalluv.max(a,b);
+			alert("最大值是" +d+ "\n最小值是"+c )
+		})
+		})
+	})
+
+    // jQuery.fn.extend()方法
+    //这种方法能够创建jQuery对象方法。
+    //
+	jQuery.fn.test =function(){
+		alert("jQuery对象方法");
+	}
+
+	 $(function(){
+	 	  $("div").click(function(){
+	 	  		$(this).test();
+	 	  })
+	 })
+
+
+  
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>本地预览</title>
+        <script type="text/javascript" src="js/jquery-2.0.3.js"></script>
+</head>
+<body>
+
+ <div class="test" style="background:red">
+         dd 
+ </div>
+ <ul>
+ 	<li><a href="test.html">我要捡钱</a><span>ddd</span></li>
+ 	<li><a href="test2.html">我要微博</a></li>
+ 	<li><a href="test3.html">我要微博一起</a></li>
+ </ul>
+<script type="text/javascript">
+;(function($,window,document,undefined){
+
+	var Beautifier = function(ele,opt){
+		this.$element = ele,
+		this.defaults = {
+			'color':'red',
+			'fontSize':'12px',
+			'textDecoration':'none'
+		},
+		this.options = $.extend({},this.defaults,opt);
+	}
+
+	Beautifier.prototype = {
+		beautify:function(){
+			return this.$element.css({
+				'color':this.options.color,
+				'fontSize':this.options.fontSize,
+				'textDecoration':this.options.textDecoration
+			})
+		}
+	}
+
+	$.fn.myPlugin = function(options){
+		var beautifier = new Beautifier(this,options);
+		return beautifier.beautify();
+	}
+	
+})(jQuery,window,document)
+
+
+ $(function(){
+ 	$("a").myPlugin({
+ 		color:'#2c9929',
+ 		fontSize:'24px'
+ 	});
+ })
+
+
+</script>
+</body>
+</html>

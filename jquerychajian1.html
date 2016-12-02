@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>本地预览</title>
+        <script type="text/javascript" src="js/jquery-2.0.3.js"></script>
+</head>
+<body>
+
+ <div class="test" style="background:red">
+         dd 
+ </div>
+<script type="text/javascript">
+$.extend({
+	sayHello:function(name){
+		console.log('hello '+(name ? name :'dude ')+'!');
+	},
+	log:function(message){
+		var now = new Date(),
+		y = now.getFullYear(),
+		m = now.getMonth(),
+		d= now.getDate(),
+		h = now.getHours(),
+		message = message || 'default',
+		time = y+'-'+m+'-'+d+'-';
+		console.log(time + ' my test '+ message)
+	}
+})
+
+$.sayHello();
+
+
+
+</script>
+</body>
+</html>

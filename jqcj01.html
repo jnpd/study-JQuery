@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>本地预览</title>
+        <script type="text/javascript" src="js/jquery-2.0.3.js"></script>
+</head>
+<body>
+<div><a href="testhref"></a>dddd</div>
+<script type="text/javascript">
+
+(function($){
+	var defaults = {
+		prevId:'prevBtn',
+		prevNext:'previous',
+		class:'on'
+	};
+
+	var showLink = function(obj){
+		$(obj).append(function(){
+			return "("+ $(obj).attr("href") +")"
+		});
+	};
+	var testFun = function(obj,css){
+		$(obj).addClass(css);
+	};
+
+	$.fn.easySlider = function(options){
+		var options = $.extend ({},defaults,options);
+		return this.each(function(){
+			showLink(this);
+			testFun(this,options.class);
+		});
+	};
+})(jQuery)
+
+$(function(){
+
+	var obj01 = {
+	 	name:"yingwen sam xiao",
+	 	age:29,
+	 	grilfriend:{
+	 		name:"yang",
+	 		age:31
+	 	}
+	};
+
+	var obj02 = {
+		name:"zhongwne xiaojie",
+		grilfriend:{
+			name:'yy',
+			age:43
+		}
+	};
+
+
+	// 链式写法
+	/*$("div>a").easySlider({
+
+	}).css({
+		"backgroundColor":"red"
+	})*/
+
+
+	// 链式写法
+	$("div>a").easySlider({
+		class:'addOn'
+	});
+
+
+
+	// 查看extend 的用法,合并 defaults 和 options
+	var aa = $.extend(obj01,obj02);
+	var bb = $.extend(true,obj01,obj02);
+	var cc = $.extend({},obj01,obj02);
+	var dd = $.extend(true,{},obj01,obj02)
+	console.log(aa);
+	console.log(bb);
+	console.log(cc);
+	console.log(dd);
+})
+
+
+</script>
+</body>
+</html>

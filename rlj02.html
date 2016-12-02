@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>本地预览</title>
+        <script type="text/javascript" src="../js/jquery-2.0.3.js"></script>
+     <style type="text/css">
+      #datePiker { width: 300px; }
+      table.p-datePiker {
+        width: 100%;
+        border-collapse: collapse;
+        
+        text-align: center;
+        font-family: 'Microsoft YaHei';
+      }
+      table.p-datePiker>thead {
+        background-color: #141213;
+        border: 1px solid #141213;
+        color: #FFF;      
+      }
+      table.p-datePiker>thead>tr:first-child {
+        background-color: #5E5E5E;
+      }
+      table.p-datePiker>tbody {
+        border: 1px solid #CCC;
+      }
+      table.p-datePiker td,table.p-datePiker th {
+        height: 30px;
+        font-weight: normal;
+      }
+      table.p-datePiker td.selected {
+        background-color: #34BF6C;
+        color: #FFF;
+        cursor: pointer;
+      }
+      table.p-datePiker th.dpMonth { text-align: center; }
+      table.p-datePiker th.dpBtn { cursor: pointer; font-size: 18px; }
+      table.p-datePiker th.dpBtn:hover { text-shadow: 2px 2px 1px #333; }
+      table.p-datePiker th.dpBtn:active { background-color:#393939; }
+      table.p-datePiker td.selectable {
+        cursor: pointer;
+      }
+      table.p-datePiker td.disabled {
+        color: #CCC;
+      }
+    </style>
+
+</head>
+<body>
+<div id="datePiker">
+	<table class="p-datePiker">
+		<thead>
+		  <tr>
+		    <th class="dpPrev dpBtn">&lt;</th>
+		    <th colspan="5" class="dpMonth">2016-06</th>
+		    <th class="dpNext dpBtn">&gt;</th>
+		  </tr>
+		  <tr>
+		    <th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th>
+		  </tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+<!-- <div class="dialogbox">
+	<div class="dialogMain">
+		<div class="dmTitle">title</div>
+		<div class="dmContent">注入内容</div>
+		<div class="dmfooter"><button>确认</button> <button>取消</button></div> 
+	</div>
+</div>-->
+<script type="text/javascript">    
+    !(function(wd,dm){
+      if(!wd.YDdatePiker){
+        wd.YDdatePiker = {
+          mode:'enable',
+          checkDays:'',
+          config: {
+            currentMonth:'',            
+            st:0,
+            et:0,
+            disDays:0
+          },
+          setMon: function(val){
+            this.config.currentMonth = val;
+            $("#datePiker table.p-datePiker>thead th.dpMonth").text(val);
+            this._rend();
+          },
+          getMon: function(){
+            return this.config.currentMonth
+          },
+          _check:function(){
+            this.config.check.apply(this,arguments);
+          },
+          show: function(config){
+            this.config.st = config.starttime || 0;
+            this.config.et = config.endtime || 0;
+
+            this.config.prev = config.prev;
+            this.config.next = config.next;
+            this.config.check = config.check;
+
+            this.config.disDays = config.disDays || '';
+            this.config.checkDays = config.checkDays?config.checkDays.split(','):[];
+
+            var st,et='';
+            if(this.config.st){
+              this.config.st = st = new Date(this.config.st+' 00:00:00');
+            }
+            if(this.config.et){
+              this.config.et = et = new Date(this.config.et+' 23:59:59');
+            }
+            if(!config.currentDate){
+              var t = st || et;
+              var m = t.getMonth()+1;
+              m = m<10?'0'+m:m;
+              this.setMon(t.getFullYear()+'/'+m);
+            }else{
+              this.setMon(config.currentDate.slice(0,7).replace(/-/g,'/'));
+            }
+
+          },
+          _next: function(){
+            var date = this.config.currentMonth;
+            var d = date.split('/');
+            if(d[1]*1+1==13){
+              d[0] =d[0]*1 + 1;
+              d[1] = '01';
+            }else{
+              d[1] = d[1]*1+1;
+              d[1] = d[1]<10?'0'+d[1]:d[1];
+            }
+            this.config.next(d[0]+'/'+d[1]);
+          },
+          _prev: function(){
+            var date = this.config.currentMonth;
+            var d = date.split('/');
+            if(d[1]-1==0){
+              d[0] -= 1;
+              d[1] = '12';
+            }else{
+              d[1] -= 1;
+              d[1] = d[1]<10?'0'+d[1]:d[1];
+            }
+            this.config.prev(d[0]+'/'+d[1]);
+          },
+          _rend: function(){            
+            var html = createHTML(this.config);
+            $("#datePiker table.p-datePiker>tbody").html(html);
+            this._init();
+          },
+          _init: function(){
+            var that = this;
+            if(arguments.callee.count){
+              return;
+            }
+            arguments.callee.count = 1;
+            $("#datePiker table.p-datePiker>tbody").on('click',function(e){
+              var day = $(e.target).attr('data-day');
+              if($(e.target).hasClass('disabled')){
+                return;
+              }else if($(e.target).hasClass('selected')){
+                $(e.target).removeClass('selected').addClass('selectable');
+                that.config.checkDays.splice(that.config.checkDays.indexOf(day),1);
+              }else{
+                $(e.target).removeClass('selectable').addClass('selected');
+                that.config.checkDays.push(day)
+              }
+              that._check(day,that.config.checkDays,e.target);
+            });
+            $("#datePiker table.p-datePiker>thead").on('click',function(e){
+              if($(e.target).hasClass('dpPrev')){
+                that._prev();
+              }else if($(e.target).hasClass('dpNext')){
+                that._next();
+              }
+            });
+          }
+        } 
+      }
+
+      function createHTML(config){      
+
+        var t0 = config.currentMonth+'/'+'01';
+        var dt = new Date(t0);
+
+        var y = dt.getFullYear();
+        var mm = dt.getMonth();
+        var m = dt.getMonth()+1;
+        m = m<10?'0'+m:m;
+
+        //get week info of first day return 0~6
+        var week = dt.getDay();
+        
+
+        var i=0;
+        var j=1;
+        var html='';
+        while(i<6){
+          html += '<tr>';
+          if(!i && week){
+            for(var w = 7;w--;){
+              if(7-week<=w){
+                html += '<td></td>';
+              }else{
+                html += '<td data-day="'+dateCreater(j)+'" class="'+classCreater(j)+'">'+j+'</td>';
+                j++;
+              }
+            }
+
+          }else{
+            for(var v = 7;v--;){
+              if(j>=29){
+                if((new Date(y+'/'+m+'/'+j)).getMonth()!=mm){
+                  j = '';
+                }
+              }
+              html += '<td data-day="'+dateCreater(j)+'" class="'+classCreater(j)+'">'+j+'</td>';
+              if(j){
+                j++;
+              }
+            }
+          }
+          html += '</tr>'
+          i++;
+          if(!j){
+            break;
+          }
+        }
+
+        return html;
+
+
+        function classCreater(num){
+          var classAry = ['disabled','selected','selectable'];
+          if(num===''){
+            return classAry[0];
+          }
+
+          num = num<10?'0'+num:num;
+
+          var d = y+'/'+m+'/'+num;
+          if(config.disDays.indexOf(d)>-1){
+            return classAry[0];
+          }
+          var day = new Date(d+' 00:00:00');
+          var st = config.st;
+          var et = config.et;
+          if(Date.parse(st)>Date.parse(day) || Date.parse(et)<Date.parse(day)){
+            return classAry[0];
+          }
+          if(config.checkDays.indexOf(d)>-1){
+            return classAry[1];
+          }
+          return classAry[2];
+
+        }
+
+        function dateCreater(num){
+          num = num<10?'0'+num:num;
+          return y+'/'+m+'/'+num;
+        }
+
+      }
+      //$("#datePiker").hide();
+    })(window,document);
+  </script>
+
+  <script type="text/javascript">
+  
+  			//调用日历
+            YDdatePiker.show({
+              currentDate:"2016-10-24",
+              starttime:"0",
+              endtime:"30",
+              disDays:"1,2,3" || '',
+              checkDays:"2,6,8" || '',
+              prev: function(date){
+                YDdatePiker.setMon(date);
+              },
+              next: function(date){
+                YDdatePiker.setMon(date);
+              },
+              check: function(day,days,elm){
+                //添加或删除
+                var dealDate = p.deal_date?p.deal_date.split(','):[];
+
+                if(dealDate.indexOf(day)>-1){
+                  dealDate.splice(dealDate.indexOf(day),1);
+                }else{
+                  dealDate.push(day);
+                }
+                p.deal_date =  dealDate.join(',');               
+              }
+            });
+  	
+  </script>
+</body>
+</html>

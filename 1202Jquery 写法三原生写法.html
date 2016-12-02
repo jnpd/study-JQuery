@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<div id="wrapper"><a href="#" id="inner">click here!</a></div>
+<script type="text/javascript" src="../js/jquery-2.0.3.js"></script>
+<script type="text/javascript">
+	var MemberCard = function(options){
+		// 配置 (默认是从外面传进来)
+		options || (options= {})
+
+		// 初始化函数
+		_init(this);
+	}
+
+	var _init = function(_self){
+		//函数执行
+		_initData(_self);
+		_self.timedHide();
+	}
+
+	var _initData = function(_self){}
+
+	//私有方法
+	MemberCard.prototype.timedHide  =function(options){
+		var _self = this;
+		clearTimeout(this.iHideTimer);
+		var oDefault = extend({nHideTime:300},options);
+		_self.iHideTimer = setTimeout(function(){
+			// 调用对象共有的方法
+		_self.hide();
+		},oDefault.nHideTime);
+	}
+
+	//公有方法
+	MemberCard.prototype.hide = function(options){}
+
+	var oColleaguCard = new MemberCard({nHideTime:200});
+	oColleaguCard.hide();
+	
+</script>
+</body>
+</html>

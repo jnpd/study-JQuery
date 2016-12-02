@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>本地预览</title>
+        <script type="text/javascript" src="js/jquery-2.0.3.js"></script>
+</head>
+<body>
+
+ <div class="test" style="background:red">
+         dd 
+ </div>
+ <ul>
+ 	<li><a href="test.html">我要捡钱</a><span>ddd</span></li>
+ 	<li><a href="test2.html">我要微博</a></li>
+ 	<li><a href="test3.html">我要微博一起</a></li>
+ </ul>
+<script type="text/javascript">
+(function($){
+	$.fn.myPlugin  =function(options){
+		return this.each(function(){
+			var $this = $(this);
+			console.log($this);
+		})
+	}
+})(jQuery)
+
+ $(function(){
+ 	$("a").myPlugin({
+ 		"backgroundColor":'#2c9929'
+ 	});
+ })
+
+
+</script>
+</body>
+</html>

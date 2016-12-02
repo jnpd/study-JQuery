@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>本地预览</title>
+        <script type="text/javascript" src="../js/jquery-2.0.3.js"></script>
+    <style type="text/css">
+    	*{margin: 0;padding:0;font-family: Helvetica Neue,Helvetica,Arial,PingFang SC,Hiragino Sans GB,WenQuanYi Micro Hei,Microsoft Yahei,sans-serif;}
+    	body{position: relative;}
+    	.dialogbox{width: 100%;background: rgba(0,0,0,0.4); position: absolute;left: 0;top:0;position: fixed;height: 100%}
+    	.dialogMain{width:400px;height: 300px;position: absolute;top:50%;left:50%;margin: -150px 0 0 -200px;background: #fff;border-radius: 10px;}
+    	.dmTitle{height: 34px;border-bottom: 1px solid #ccc;padding: 0 20px;line-height: 24px;}
+    	.dmfooter{height: 50px;border-top:1px solid #ccc; position:absolute; bottom: 0;width: 100%;padding: 15px 0 0}
+    </style>
+</head>
+<body>
+<button id="js-click">点击弹层 </button>
+<div class="addHtml"></div>
+<div id="dialogDiv"></div>
+<script type="text/javascript">
+	var html = '';
+	for(var i=0;i<=100;i++){
+		html+="<P>第 "+ i +" 行</p>";
+
+	}
+	$(".addHtml").html(html);/**/
+</script>
+<!-- <div class="dialogbox">
+	<div class="dialogMain">
+		<div class="dmTitle">title</div>
+		<div class="dmContent">注入内容</div>
+		<div class="dmfooter"><button>确认</button> <button>取消</button></div> 
+	</div>
+</div>-->
+<script type="text/javascript">
+
+(function(w,d){
+	if(!w.dialogBox){
+		w.dialogBox={
+			msg:'提示',
+			alertHtml:['<div class="dialogMain" ><div class="dmTitle">title</div><div class="dmInfo">','</div><div class="dmfooter"><button id="butOk">确认</button> <button>取消</button></div></div>'],
+			alert:function(msg,callback){
+				this.msg = msg;
+				this.appendHtml();
+			},
+			appendHtml:function(str){
+				var div = d.createElement("div");
+				div.className = 'dialogbox';
+				document.getElementById("dialogDiv").appendChild(div);
+				if(!str){
+					div.innerHTML = this.alertHtml[0]+this.msg+this.alertHtml[1];
+				};
+
+				div.addEventListener('click',w.dialogBox._event,false);
+				document.getElementById("butOk").addEventListener('click',w.dialogBox._sure)
+			},
+			_event:function(e){
+				
+				//e.stopPropagation();
+				console.log("you has click");
+			},
+			_sure:function(e){
+				
+				w.dialogBox.clear();
+
+			},
+			clear:function(){
+				var child = d.body.children;
+				child.dialogDiv.innerHTML='';
+			}
+		}
+	}
+
+})(window,document);
+
+$(function(){
+
+	$("#js-click").on('click',function(){
+		var html = "<h3> jeow boottstrap </h3><div class='testContent'><input type='text' placeholder='请输入提示信息' /></div>"
+		window.dialogBox.alert(html);
+	});
+
+
+});
+
+
+
+
+</script>
+</body>
+</html>

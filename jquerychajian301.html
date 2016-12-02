@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>本地预览</title>
+        <script type="text/javascript" src="js/jquery-2.0.3.js"></script>
+</head>
+<body>
+
+ <div class="test" style="background:red">
+         dd 
+ </div>
+ <ul>
+ 	<li><a href="test.html">我要捡钱</a><span>ddd</span></li>
+ 	<li><a href="test2.html">我要微博</a></li>
+ 	<li><a href="test3.html">我要微博一起</a></li>
+ </ul>
+<script type="text/javascript">
+
+;(function($,window,document,undefined){
+	var addBgColor = function(ele,opt){
+		this.$element = ele,
+		this.defaults = {
+			"backgroundColor":'red'
+		},
+		this.options = $.extend({},this.defaults,opt)
+	};
+    debugger;
+	addBgColor.prototype = {
+		addbgcolor : function(){
+			return this.$element.css({
+				'backgroundColor':this.options.backgroundColor
+			})
+		}
+	};
+
+	$.fn.myPlugin = function(options){
+		var bgcol = new addBgColor(this,options);
+		return bgcol.addbgcolor();
+	}
+
+})(jQuery,window,document)
+
+ $(function(){
+ 	$("a").myPlugin({
+ 		"backgroundColor":'#2c9929'
+ 	});
+ })
+
+
+</script>
+</body>
+</html>
